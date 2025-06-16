@@ -2,7 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Para você...</title> <style>
+  <title>Para você...</title>
+  <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -25,40 +26,38 @@
       }
     }
 
-    /* Estilos para a tela de introdução */
     #intro-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: #ff69b4; /* Fundo rosa vibrante */
+      background: #ff69b4; 
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      z-index: 1000; /* Garante que fique por cima de tudo */
+      z-index: 1000;
       color: #fff; /* Cor do texto branco para contraste */
-      font-size: 5em; /* Palavras bem grandes */
+      font-size: 5em;
       opacity: 1;
       transition: opacity 1s ease-out;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra para o texto se destacar */
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
       font-weight: bold;
     }
 
     #intro-text {
-      opacity: 0; /* Começa invisível */
-      transition: opacity 0.5s ease-in-out; /* Transição para aparecer/desaparecer */
+      /* Remove a transição de opacidade daqui para o JS controlar */
+      opacity: 0; /* Começa invisível, mas o JS vai mudar isso */
       margin-bottom: 20px;
     }
 
-    /* Estilos para a tela principal do pedido */
     #main-content {
-      display: none; /* Inicialmente escondido */
+      display: none; 
       opacity: 0;
       transition: opacity 1s ease-in;
-      position: relative; /* Para o posicionamento do botão 'Não' */
-      min-height: 100vh; /* Garante que o conteúdo principal ocupe a altura da tela */
+      position: relative; 
+      min-height: 100vh;
     }
 
     h1 {
@@ -117,13 +116,13 @@
 
     .frase-flutuante { 
       position: absolute;
-      font-size: 20px; /* Tamanho da frase flutuante */
+      font-size: 20px; 
       font-weight: bold;
-      color: #ff0080; /* Cor rosa vibrante para as frases */
-      animation: desaparecer 1.5s ease-out forwards; /* Animação para a frase sumir */
-      pointer-events: none; /* Impede que o cursor interfira em outros elementos */
-      white-space: nowrap; /* Impede que a frase quebre a linha */
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Sombra para destacar o texto */
+      color: #ff0080; 
+      animation: desaparecer 1.5s ease-out forwards; 
+      pointer-events: none; 
+      white-space: nowrap; 
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5); 
     }
 
     @keyframes desaparecer {
@@ -179,33 +178,36 @@
     
     const introWords = ['oi', 'bbzuda', 'eu', 'te', 'amo', 'muito', 'e', 'queria', 'te', 'perguntar', 'uma', 'coisa...'];
     let currentWordIndex = 0;
-    let inMainScreen = false; // Flag para controlar se estamos na tela principal
+    let inMainScreen = false; 
 
     // Função para exibir as palavras da introdução
     function showNextIntroWord() {
       if (currentWordIndex < introWords.length) {
         introText.textContent = introWords[currentWordIndex];
-        introText.style.opacity = '1'; // Torna a palavra visível
+        // Adiciona a classe para animar o fade-in do texto
+        introText.style.opacity = '1'; 
+        introText.style.transition = 'opacity 0.5s ease-in-out'; // Garante a transição aqui
 
         setTimeout(() => {
           introText.style.opacity = '0'; // Faz a palavra desaparecer
           currentWordIndex++;
-          setTimeout(showNextIntroWord, 500); // Espera 0.5s antes de mostrar a próxima palavra
-        }, 1200); // Exibe a palavra por 1.2 segundos
+          // Atraso antes de chamar a próxima palavra para que a animação de fade-out termine
+          setTimeout(showNextIntroWord, 500); 
+        }, 1200); // Tempo que a palavra fica visível antes de começar a desaparecer
       } else {
         // Todas as palavras foram exibidas, transita para a tela principal
         setTimeout(() => {
-          introScreen.style.opacity = '0';
+          introScreen.style.opacity = '0'; // Faz a tela de introdução desaparecer
           setTimeout(() => {
-            introScreen.style.display = 'none';
-            mainContent.style.display = 'block';
-            setTimeout(() => { // Pequeno atraso para a transição de opacidade funcionar
-              mainContent.style.opacity = '1';
-              inMainScreen = true; // Define a flag para a tela principal
+            introScreen.style.display = 'none'; // Esconde a tela de introdução completamente
+            mainContent.style.display = 'block'; // Mostra a tela principal
+            setTimeout(() => { 
+              mainContent.style.opacity = '1'; // Faz a tela principal aparecer suavemente
+              inMainScreen = true; 
               positionInitialNaoButton(); // Posiciona o botão "Não"
-            }, 50);
-          }, 1000); // Tempo da transição de opacidade da tela de introdução
-        }, 1000); // Espera 1 segundo após a última palavra sumir
+            }, 50); // Pequeno atraso para a transição de opacidade da main-content
+          }, 1000); // Tempo para a transição de opacidade da intro-screen terminar
+        }, 1000); // Espera 1 segundo após a última palavra sumir da tela
       }
     }
 
@@ -214,7 +216,6 @@
         showNextIntroWord();
     });
 
-    // Função para mover o botão "Não" aleatoriamente
     function moverBotaoNao() {
       const maxX = window.innerWidth - naoButton.offsetWidth - 20; 
       const maxY = window.innerHeight - naoButton.offsetHeight - 20; 
@@ -226,9 +227,8 @@
       naoButton.style.top = `${newY}px`;
     }
 
-    // Função para criar as frases "agressivas" flutuantes
     function criarFraseFlutuante(x, y) {
-        if (!inMainScreen) return; // Só cria a frase se estiver na tela principal
+        if (!inMainScreen) return; 
 
         const fraseElemento = document.createElement('div');
         fraseElemento.classList.add('frase-flutuante');
@@ -253,17 +253,15 @@
         }, 1500); 
     }
 
-    // Eventos da tela principal
     simButton.addEventListener('click', () => {
       simButton.style.display = 'none';
       naoButton.style.display = 'none';
       animacaoDiv.style.display = 'block';
-      clearTimeout(timer); // Limpa o timer de "demora"
+      clearTimeout(timer); 
     });
 
-    // Move o botão "Não" ao passar o cursor próximo
     document.addEventListener('mousemove', (e) => {
-      if (!inMainScreen) return; // Só funciona na tela principal
+      if (!inMainScreen) return; 
 
       const naoButtonRect = naoButton.getBoundingClientRect();
       const mouseX = e.clientX;
@@ -279,7 +277,6 @@
       }
     });
 
-    // Posiciona o botão "Não" inicialmente
     function positionInitialNaoButton() {
         const simRect = simButton.getBoundingClientRect();
         naoButton.style.position = 'absolute';
@@ -291,30 +288,28 @@
         }
     }
 
-    // Cria frases flutuantes ao clicar ou tocar na tela principal
+    // Criar frases flutuantes APENAS quando o mouse/toque acontece na tela principal
+    // (o `if (inMainScreen)` já faz essa validação)
     document.addEventListener('click', (e) => {
-      if (inMainScreen) { // Só cria a frase se estiver na tela principal
+      if (inMainScreen) { 
           criarFraseFlutuante(e.clientX, e.clientY);
       }
     });
 
     document.addEventListener('touchstart', (e) => {
-      if (inMainScreen) { // Só cria a frase se estiver na tela principal
+      if (inMainScreen) { 
           const touch = e.touches[0];
           criarFraseFlutuante(touch.clientX, touch.clientY);
       }
     });
 
-    // Temporizador para exibir a frase "Você está demorando..."
-    // Este timer só deve ser ativado APÓS a transição para a tela principal
-    let timer = null; // Inicializa como null para ser definido depois
+    let timer = null; 
 
     mainContent.addEventListener('transitionend', () => {
       if (mainContent.style.opacity === '1' && timer === null) {
         timer = setTimeout(() => {
-          // Aqui você pode adicionar uma nova mensagem, animação ou outra ação
           // alert("Você está demorando muito para responder! 😅"); 
-        }, 20000); // 20 segundos
+        }, 20000); 
       }
     });
   </script>
