@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Eu te amo, Laís</title> <style>
+  <title>Para você...</title> <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -47,8 +47,8 @@
     }
 
     #intro-text {
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
+      opacity: 0; /* Começa invisível */
+      transition: opacity 0.5s ease-in-out; /* Transição para aparecer/desaparecer */
       margin-bottom: 20px;
     }
 
@@ -185,7 +185,7 @@
     function showNextIntroWord() {
       if (currentWordIndex < introWords.length) {
         introText.textContent = introWords[currentWordIndex];
-        introText.style.opacity = '1';
+        introText.style.opacity = '1'; // Torna a palavra visível
 
         setTimeout(() => {
           introText.style.opacity = '0'; // Faz a palavra desaparecer
