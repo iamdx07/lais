@@ -2,12 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Para você...</title>
-  <style>
+  <title>Para você...</title> <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      background: #1a1a1a;
+      background: #1a1a1a; /* Fundo padrão para o body, será coberto */
       color: #fff;
       margin: 0;
       padding: 0;
@@ -26,20 +25,21 @@
       }
     }
 
+    /* Estilos para a tela de introdução */
     #intro-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: #ff69b4; 
+      background: #ff69b4; /* Fundo rosa vibrante para a introdução */
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      z-index: 1000;
-      color: #fff; /* Cor do texto branco para contraste */
-      font-size: 5em;
+      z-index: 1000; 
+      color: #fff; 
+      font-size: 7em; /* Aumentei o tamanho das palavras da introdução */
       opacity: 1;
       transition: opacity 1s ease-out;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -47,23 +47,26 @@
     }
 
     #intro-text {
-      /* Remove a transição de opacidade daqui para o JS controlar */
-      opacity: 0; /* Começa invisível, mas o JS vai mudar isso */
+      opacity: 0; /* Começa invisível */
       margin-bottom: 20px;
     }
 
+    /* Estilos para a tela principal do pedido */
     #main-content {
       display: none; 
       opacity: 0;
       transition: opacity 1s ease-in;
       position: relative; 
       min-height: 100vh;
+      background: #ffc0cb; /* Novo fundo rosa claro para a página principal */
+      color: #333; /* Cor do texto para contraste com o rosa claro */
     }
 
-    h1 {
-      color: #ff0080;
+    #main-content h1 { /* Específico para o h1 dentro da main-content */
+      color: #880e4f; /* Cor mais escura para o título principal */
       margin-top: 100px;
-      font-size: 36px;
+      font-size: 48px; /* Aumentei o tamanho do "Quer namorar comigo?" */
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
 
     .pedido {
@@ -78,27 +81,28 @@
 
     .botao {
       display: inline-block;
-      padding: 10px 20px;
-      font-size: 20px;
-      background-color: #ff0080;
+      padding: 20px 40px; /* Aumentei o padding dos botões */
+      font-size: 24px; /* Aumentei o tamanho da fonte dos botões */
+      background-color: #e91e63; /* Tom de rosa para os botões */
       color: #fff;
       border: none;
       cursor: pointer;
-      margin: 0 10px;
-      transition: transform 0.3s;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      margin: 0 15px; /* Aumentei a margem entre os botões */
+      transition: transform 0.3s, background-color 0.3s;
+      border-radius: 8px; /* Borda mais arredondada */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     }
 
     .botao:hover {
       transform: scale(1.1);
+      background-color: #d81b60; /* Tom mais escuro no hover */
     }
 
     .animacao {
       display: none;
       margin-top: 50px;
-      font-size: 24px;
-      color: #ff0080;
+      font-size: 28px; /* Aumentei a fonte da mensagem final */
+      color: #880e4f; /* Cor mais escura para a mensagem final */
       animation: pulsar 2s infinite;
     }
 
@@ -116,7 +120,7 @@
 
     .frase-flutuante { 
       position: absolute;
-      font-size: 20px; 
+      font-size: 22px; /* Tamanho da frase flutuante levemente maior */
       font-weight: bold;
       color: #ff0080; 
       animation: desaparecer 1.5s ease-out forwards; 
@@ -146,6 +150,27 @@
     #nao:hover {
       transform: scale(1.2);
       background-color: #f00;
+    }
+
+    /* Responsividade para telas menores */
+    @media (max-width: 768px) {
+      #intro-screen {
+        font-size: 3.5em; /* Ajusta o tamanho da fonte para celulares */
+      }
+      #main-content h1 {
+        font-size: 36px; /* Ajusta o tamanho do h1 principal para celulares */
+      }
+      .botao {
+        padding: 15px 30px; /* Ajusta o padding dos botões para celulares */
+        font-size: 20px;
+        margin: 0 10px;
+      }
+      .animacao {
+        font-size: 20px;
+      }
+      .frase-flutuante {
+        font-size: 18px;
+      }
     }
 
   </style>
@@ -288,8 +313,6 @@
         }
     }
 
-    // Criar frases flutuantes APENAS quando o mouse/toque acontece na tela principal
-    // (o `if (inMainScreen)` já faz essa validação)
     document.addEventListener('click', (e) => {
       if (inMainScreen) { 
           criarFraseFlutuante(e.clientX, e.clientY);
